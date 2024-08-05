@@ -24,6 +24,9 @@ Route::post('/customer', [Customer::class, 'create'])->name('customer.create');
 Route::post('/customer/{id}', [Customer::class, 'edit'])->name('customer.edit');
 Route::get('/customer/{id}', [Customer::class, 'delete'])->name('customer.delete');
 // Barang
-Route::get('/barang', [Barang::class, 'index'])->name('barang');
+Route::get('/barang', [Barang::class, 'index'])->name('barang.index');
+Route::post('/barang', [Barang::class, 'create'])->name('barang.create');
+Route::post('/barang/{id}', [Barang::class, 'edit'])->name('barang.edit');
+Route::get('/barang/{id}', [Barang::class, 'delete'])->name('barang.delete');
 // Transaksi
 Route::get('/transaksi', [Transaksi::class, 'index'])->name('transaksi');
