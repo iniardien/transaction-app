@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('kode',10);
             $table->string('name',100);
             $table->string('telp',20);
+            $table->integer('is_delete');
             $table->timestamps();
         });
     }

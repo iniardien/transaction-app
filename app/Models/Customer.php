@@ -10,5 +10,12 @@ class Customer extends Model
     use HasFactory;
 
     protected $table = 'm_customer';
+
+    protected $fillable = [
+        'kode',
+        'name',
+        'telp',
+        'is_delete'
+    ];
     
 }

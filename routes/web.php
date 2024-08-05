@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Barang;
 use App\Http\Controllers\Customer;
+use App\Http\Controllers\Dashboard;
+use App\Http\Controllers\Transaksi;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,5 +16,14 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', [Customer::class, 'index'])->name('home');
+// Dashboard
+Route::get('/',[Dashboard::class,'index'])->name('dashboard');
+// Customer
+Route::get('/customer', [Customer::class, 'index'])->name('customer.index');
+Route::post('/customer', [Customer::class, 'create'])->name('customer.create');
+Route::post('/customer/{id}', [Customer::class, 'edit'])->name('customer.edit');
+Route::get('/customer/{id}', [Customer::class, 'delete'])->name('customer.delete');
+// Barang
+Route::get('/barang', [Barang::class, 'index'])->name('barang');
+// Transaksi
+Route::get('/transaksi', [Transaksi::class, 'index'])->name('transaksi');
