@@ -16,6 +16,11 @@
     <!-- Nepcha Analytics (nepcha.com) -->
     <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
     <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.3/css/dataTables.dataTables.css" />
+    <script src="https://cdn.datatables.net/2.1.3/js/dataTables.js"></script>
+    
     {{-- Title --}}
 
     <title>@yield('title', 'Transaction App')</title>
@@ -25,17 +30,15 @@
 
     <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../assets/fontawesome/css/fontawesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-        crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
+
 
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
     <script>
-        function deletebtn(event,id,url) {
+        function deletebtn(event, id, url) {
             event.preventDefault();
             Swal.fire({
                 title: "Are you sure?",
@@ -47,11 +50,11 @@
                 confirmButtonText: "Yes, delete it!"
             }).then((result) => {
                 if (result.isConfirmed) {
-                   window.location.href = url;
+                    window.location.href = url;
                 }
             });
         }
-</script>
+    </script>
     @if (session('success'))
         <script>
             const Toast = Swal.mixin({
