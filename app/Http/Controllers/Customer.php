@@ -11,13 +11,19 @@ class Customer extends Controller
     public function index(Request $request)
     {
         $menu = 'customer';
-        $query = CustomerModel::where('is_delete', 0);
+        $query = CustomerModel::query();
+        $query->where('is_delete', 0);
         if($search = $request->input('search')){
-            $query->where('name', 'like', '%'.$search.'%')
-                ->orWhere('telp', 'like', '%'.$search.'%');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('kode', 'like', '%' . $search . '%')
+                  ->orWhere('telp', 'like', '%' . $search . '%');
+            });
             
         }
+    
         $customer = $query->paginate(5);
+        $customer->appends(['search' => $search]);
         return view('customer.index', [
             'menu' => $menu,
             'customers' => $customer
@@ -26,12 +32,12 @@ class Customer extends Controller
 
     public function create(Request $request)
     {
-        $lastcustomer = CustomerModel::latest()->first();
-        $newId = $lastcustomer ? $lastcustomer->id + 1 : 1;
-        $kode = 'CUS' . $newId;
+        // $lastcustomer = CustomerModel::latest()->first();
+        // $newId = $lastcustomer ? $lastcustomer->id + 1 : 1;
+        // $kode = 'CUS' . $newId;
 
         $customer = CustomerModel::create([
-            'kode' => $kode,
+            'kode' => $request->kode,
             'name' => $request->nama,
             'telp' => $request->no_telp
         ]);
@@ -48,6 +54,7 @@ class Customer extends Controller
         $decryptId = Crypt::decrypt($id);
         $customer = CustomerModel::findOrFail($decryptId);
         $customer->update([
+            'kode' => $request->kode,
             'name' => $request->nama,
             'telp' => $request->no_telp
         ]);

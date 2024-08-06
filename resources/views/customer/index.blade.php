@@ -75,7 +75,7 @@
                                             $encryptid = Crypt::encrypt($customer->id);
                                         @endphp
                                         <a href="{{ route('customer.edit', $encryptid) }}" class="btn btn-warning"
-                                            data-name="{{ $customer->name }}" data-telp ="{{ $customer->telp }}"
+                                            data-name="{{ $customer->name }}" data-telp ="{{ $customer->telp }}" data-kode="{{ $customer->kode }}"
                                             data-bs-target="#addModal" data-bs-toggle="modal" id="editModalbtn"><i
                                                 class="far fa-edit"></i></a>
                                                 
@@ -113,6 +113,14 @@
 
                                 <div class="row mb-3">
                                     <div class="col-3">
+                                        <p style="margin-top: 5px">Kode</p>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" name="kode" id="kode" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-3">
                                         <p style="margin-top: 5px">Nama</p>
                                     </div>
                                     <div class="col-9">
@@ -146,12 +154,14 @@
             $(document).on('click', '#addModalbtn', function() {
                 $('#Title').html('Add Customer');
                 $('#nama').val('');
+                $('#kode').val('');
                 $('#no_telp').val('');
                 $('#formType').attr('action', $(this).attr('href'));
             })
             $(document).on('click','#editModalbtn', function() {
                 $('#Title').html('Edit Customer');
                 $('#nama').val($(this).data('name'));
+                $('#kode').val($(this).data('kode'));
                 $('#no_telp').val($(this).data('telp'));
                 $('#formType').attr('action', $(this).attr('href'));
             })

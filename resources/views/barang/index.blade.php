@@ -75,7 +75,7 @@
                                             $encryptid = Crypt::encrypt($barang->id);
                                         @endphp
                                         <a href="{{ route('barang.edit', $encryptid) }}" class="btn btn-warning"
-                                            data-name="{{ $barang->nama }}" data-harga="{{ number_format($barang->harga, 0, ',', '.') }}" data-qty="{{ $barang->qty }}"
+                                            data-name="{{ $barang->nama }}" data-kode="{{ $barang->kode }}" data-harga="{{ number_format($barang->harga, 0, ',', '.') }}" data-qty="{{ $barang->qty }}"
                                             data-bs-target="#addModal" data-bs-toggle="modal" id="editModalbtn"><i
                                                 class="far fa-edit"></i></a>
 
@@ -112,6 +112,14 @@
                         <div class="row">
                             <div class="col-12">
 
+                                <div class="row mb-3">
+                                    <div class="col-3">
+                                        <p style="margin-top: 5px">Kode</p>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" name="kode" id="kode" class="form-control" required>
+                                    </div>
+                                </div>
                                 <div class="row mb-3">
                                     <div class="col-3">
                                         <p style="margin-top: 5px">Nama</p>
@@ -160,6 +168,7 @@
                 $('#Title').html('Add Barang');
                 $('#nama').val('');
                 $('#harga').val('');
+                $('#kode').val('');
                 $('#qty').val('');
                 $('#formType').attr('action', $(this).attr('href'));
             })
@@ -168,6 +177,7 @@
                 $('#nama').val($(this).data('name'));
                 $('#harga').val($(this).data('harga'));
                 $('#qty').val($(this).data('qty'));
+                $('#kode').val($(this).data('kode'));
                 $('#formType').attr('action', $(this).attr('href'));
             })
             $('#harga').on('input', function(e) {

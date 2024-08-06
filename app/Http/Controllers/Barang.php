@@ -10,13 +10,19 @@ class Barang extends Controller
 {
     public function index(Request $request) {
         $menu = 'barang';
-        $query = ModelsBarang::where('is_delete', 0);
+        $query = ModelsBarang::query();
+        $query->where('is_delete', 0);
         if($search = $request->input('search')){
-            $query->where('nama', 'like', '%'.$search.'%')
-                ->orWhere('harga', 'like', '%'.$search.'%');
+            $query->where(function ($q) use ($search) {
+                $q->where('nama', 'like', '%' . $search . '%')
+                  ->orWhere('kode', 'like', '%' . $search . '%')
+                  ->orWhere('harga', 'like', '%' . $search . '%');
+            });
             
         }
         $barang = $query->paginate(5);
+        $barang->appends(['search' => $search]);
+
         return view('barang.index', [
             'menu' => $menu,
             'barangs' => $barang
@@ -25,12 +31,12 @@ class Barang extends Controller
 
     public function create(Request $request)
     {
-        $lastbarang = ModelsBarang::latest()->first();
-        $newId = $lastbarang ? $lastbarang->id + 1 : 1;
-        $kode = 'BRG' . $newId;
+        // $lastbarang = ModelsBarang::latest()->first();
+        // $newId = $lastbarang ? $lastbarang->id + 1 : 1;
+        // $kode = 'BRG' . $newId;
         $harga = str_replace('.', '', $request->input('harga'));
         $barang = ModelsBarang::create([
-            'kode' => $kode,
+            'kode' => $request->kode,
             'nama' => $request->nama,
             'harga' => $harga,
             'qty' => $request->qty
@@ -49,6 +55,7 @@ class Barang extends Controller
         $barang = ModelsBarang::findOrFail($decryptId);
         $harga = str_replace('.', '', $request->input('harga'));
         $barang->update([
+            'kode' => $request->kode,
             'nama' => $request->nama,
             'harga' => $harga,
             'qty' => $request->qty
