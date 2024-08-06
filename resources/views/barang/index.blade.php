@@ -13,6 +13,8 @@
             color: white;
             /* Warna teks putih untuk item aktif */
         }
+
+        
     </style>
     <div class="row">
         <div class="col-12">
@@ -68,16 +70,17 @@
                                     <td class="text-center">{{ $firstItem + $index }}</td>
                                     <td>{{ $barang->kode }}</td>
                                     <td>{{ $barang->nama }}</td>
-                                    <td>Rp{{ number_format($barang->harga, 0, ',', '.') }}</td>
+                                    <td>Rp{{ number_format($barang->harga, 2, ',', '.') }}</td>
                                     <td>{{ $barang->qty }}</td>
                                     <td>
                                         @php
                                             $encryptid = Crypt::encrypt($barang->id);
                                         @endphp
                                         <a href="{{ route('barang.edit', $encryptid) }}" class="btn btn-warning"
-                                            data-name="{{ $barang->nama }}" data-kode="{{ $barang->kode }}" data-harga="{{ number_format($barang->harga, 0, ',', '.') }}" data-qty="{{ $barang->qty }}"
-                                            data-bs-target="#addModal" data-bs-toggle="modal" id="editModalbtn"><i
-                                                class="far fa-edit"></i></a>
+                                            data-name="{{ $barang->nama }}" data-kode="{{ $barang->kode }}"
+                                            data-harga="{{ number_format($barang->harga, 0, ',', '.') }}"
+                                            data-qty="{{ $barang->qty }}" data-bs-target="#addModal"
+                                            data-bs-toggle="modal" id="editModalbtn"><i class="far fa-edit"></i></a>
 
                                         <a href="{{ route('barang.delete', $encryptid) }}"
                                             onclick="deletebtn(event,{{ $barang->id }},'{{ route('barang.delete', $encryptid) }}')"
@@ -108,10 +111,8 @@
                 <form id="formType" method="post">
                     @csrf
                     <div class="modal-body">
-
                         <div class="row">
                             <div class="col-12">
-
                                 <div class="row mb-3">
                                     <div class="col-3">
                                         <p style="margin-top: 5px">Kode</p>
@@ -134,9 +135,13 @@
                                     </div>
                                     <div class="col-9">
                                         <div class="input-group">
-                                            <span class="input-group-text" id="basic-addon1">Rp</span>
-                                            <input type="text" name="harga" id="harga" 
-                                                class="form-control" required>
+
+                                            <span class="input-group-text">Rp</span>
+                                            <input type="text" class="form-control" name="harga"
+                                                id="harga" required>
+                                                
+                                          
+
                                         </div>
                                     </div>
                                 </div>
