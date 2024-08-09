@@ -77,7 +77,7 @@
 
 
                     </div>
-                    <form action="{{ route('transaksi.store') }}" id="formTransaksi" method="POST">
+                    <form action="{{ route('transaksi.update', Crypt::encrypt($transaksi->id)) }}" id="formTransaksi" method="POST">
                         @csrf
                         <div class="row mb-3">
                             <div class="col-md-12">
@@ -92,7 +92,7 @@
 
                                             <div class="col-6">
                                                 <input type="text" class="form-control" name="notransaksi"
-                                                    id="notransaksi" readonly value="{{ $notransaksi }}">
+                                                    id="notransaksi" readonly value="{{ $transaksi->kode }}">
                                             </div>
 
                                         </div>
@@ -105,7 +105,7 @@
 
                                             <div class="col-6">
                                                 <input type="date" class="form-control" name="tgl" id="tgl"
-                                                    required>
+                                                    required value="{{  $date  }}">
                                             </div>
 
                                         </div>
@@ -115,14 +115,14 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="row form-group">
-                                            <input type="text" id="id_customer" hidden name="id_customer">
+                                            <input type="text" id="id_customer" hidden name="id_customer" value="{{ $transaksi->cust->id }}">
                                             <div class="col-2">
                                                 <label class="label-form" for="kode">Kode</label>
                                             </div>
                                             <div class="col-6">
                                                 <div class="input-group">
                                                     <input type="text" nama="customer_kode" id="customer_kode"
-                                                        class="form-control" readonly placeholder="Search Customer"
+                                                        class="form-control" value="{{ $transaksi->cust->kode }}" readonly placeholder="Search Customer"
                                                         aria-label="Search Customer" aria-describedby="button-addon2">
                                                     <button class="btn btn-outline-primary mb-0" type="button"
                                                         id="button-addon2" data-bs-toggle="modal"
@@ -142,7 +142,7 @@
 
                                             <div class="col-6">
                                                 <input type="text" class="form-control" name="nama_customer"
-                                                    id="customer_name" required readonly>
+                                                    id="customer_name" value="{{ $transaksi->cust->name }}" required readonly>
                                             </div>
 
                                         </div>
@@ -154,7 +154,7 @@
                                             </div>
                                             <div class="col-6">
                                                 <input type="text" class="form-control" name="telp_customer"
-                                                    id="customer_telp" required readonly>
+                                                    id="customer_telp" value="{{ $transaksi->cust->telp }}" required readonly>
                                             </div>
 
                                         </div>
@@ -193,7 +193,20 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-
+                                                            @foreach ($salesdetail as $item)
+                                                            <tr id="row_"{{$item->barang->id}}>
+                                                                <td ><button type="button" class="btn btn-danger" onclick="deleteRow({{$item->barang->id}})"><i class="fas fa-trash"></i></button></td>
+                                                                <td class="text-center"><input type="text" hidden name="barang_id[]" value="{{$item->barang->id}}">{{$loop->iteration}}</td>
+                                                                <td style="text-align: left">{{$item->barang->kode}}</td>
+                                                                <td style="text-align: left">{{$item->barang->nama}}</td>
+                                                                <td style="text-align: left"><input type="number"  value="{{$item->qty}}" class="form-control" id="qty_{{$item->barang->id}}" oninput="updateqty({{$item->barang->id}},{{$item->barang->qty + $item->qty}})" name="qty[]" min="0" max="{{$item->barang->qty + $item->qty}}"></td>
+                                                                <td style="text-align: left"><input type="text" class="form-control" id="harga_{{$item->barang->id}}" name="harga_bandrol[]" value="{{$item->harga_bandrol}}" hidden>Rp{{number_format($item->harga_bandrol,2,',','.')}}</td>
+                                                                <td style="text-align: left"><input type="number" class="form-control" id="percentage_{{$item->barang->id}}" value="{{round($item->diskon_pct)}}" oninput="updatepercentage({{$item->barang->id}})" name="diskon_pct[]" min="0" max="100"></td>
+                                                                <td style="text-align: left"><input type="text" class="form-control" id="discount_{{$item->barang->id}}" value="{{number_format($item->diskon_nilai,0,',','.')}}" name="diskon_nilai[]" oninput="updatediscount({{$item->barang->id}})"></td>
+                                                                <td style="text-align: left" id="td_hargadiskon_{{$item->barang->id}}"><input type="text" class="form-control" hidden id="hargadiskon_{{$item->barang->id}}"  name="harga_diskon[]" value="{{number_format($item->harga_diskon,0,',','.')}}"><span id="span_diskon{{$item->barang->id}}">Rp{{number_format($item->harga_diskon,2,',','.')}}</span></td>
+                                                                <td style="text-align: left" id="total_{{$item->barang->id}}"><input type="text" class="form-control" hidden id="total_hargainput{{$item->barang->id}}"  name="total_harga[]" value="{{number_format($item->total,0,',','.')}}"><span id="span_total_{{$item->barang->id}}">Rp{{number_format($item->total,2,',','.')}}</span></td>
+                                                            </tr>
+                                                            @endforeach
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -207,7 +220,7 @@
                                         <label class="label-form" for="telp">Sub Total</label>
                                     </div>
                                     <div class="col-4">
-                                        <input type="text" class="form-control" name="sub_total" id="sub_total"
+                                        <input type="text" value="{{ number_format($transaksi->subtotal,0,',','.')}}" class="form-control" name="sub_total" id="sub_total"
                                             required readonly>
                                     </div>
 
@@ -219,7 +232,7 @@
                                         <label class="label-form" for="telp">Diskon</label>
                                     </div>
                                     <div class="col-4">
-                                        <input type="text" class="form-control" name="diskon" id="diskon"
+                                        <input type="text" value="{{ number_format($transaksi->diskon,0,',','.')}}" class="form-control" name="diskon" id="diskon"
                                             required>
                                     </div>
 
@@ -229,7 +242,7 @@
                                         <label class="label-form" for="telp">Ongkir</label>
                                     </div>
                                     <div class="col-4">
-                                        <input type="text" class="form-control" name="ongkir" id="ongkir"
+                                        <input type="text" value="{{ number_format($transaksi->ongkir,0,',','.')}}" class="form-control" name="ongkir" id="ongkir"
                                             required>
                                     </div>
 
@@ -240,7 +253,7 @@
                                     </div>
                                     <div class="col-4">
                                         <input type="text" class="form-control" name="total_bayar" id="total_bayar"
-                                            required readonly>
+                                            required readonly value="{{ number_format($transaksi->total_bayar,0,',','.')}}">
                                     </div>
 
                                 </div>
@@ -369,7 +382,8 @@
         $(document).ready(function() {
             $('#dataCustomer').DataTable();
             $('#dataBarang').DataTable();
-
+            updateTableWidth();
+            
             $('.submit_data').on('click', function() {
                 var selectedCustomer = $('input[name="customer_id"]:checked');
                 if (selectedCustomer.length > 0) {
@@ -382,7 +396,7 @@
                     $('#customer_name').val(customerName);
                     $('#customer_kode').val(customerKode);
                     $('#customer_telp').val(customerTelp);
-
+                    console.log($('#tgl').val());
                     // Tutup modal
                     $('#Closemodal').click();
                 } else {
@@ -420,7 +434,7 @@
 
             });
 
-            window.deleteRow = function(id) {
+            window.deleteRow = function(id) {   
                 $(`#row_${id}`).remove();
                 updateTableWidth();
                 calculateSubTotal();

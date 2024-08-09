@@ -9,16 +9,16 @@
     <hr class="horizontal dark mt-0">
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a class="nav-link {{ $menu == 'dashboard' ? 'active' : ''}}" href="/">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="fas fa-chart-line {{ $menu == 'dashboard' ? 'text-white' : ''}}"></i>
             </div>
             <span class="nav-link-text ms-1">Dashboard</span>
           </a>
-        </li>
+        </li> --}}
         <li class="nav-item">
-          <a class="nav-link {{ $menu == 'transaksi' ? 'active' : ''}} " href="/transaksi">
+          <a class="nav-link {{ $menu == 'transaksi' ? 'active' : ''}} " href="/">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="far fa-credit-card {{ $menu == 'transaksi' ? 'text-white' : ''}}"></i>
             </div>

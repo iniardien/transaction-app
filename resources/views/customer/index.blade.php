@@ -44,49 +44,51 @@
                     </div>
 
 
-
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th class="text-center">No</th>
-                                <th>Kode</th>
-                                <th>Nama</th>
-                                <th>No Telp</th>
-
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @php
-                                $currentPage = $customers->currentPage();
-                                $perPage = $customers->perPage();
-                                $firstItem = $customers->firstItem();
-                            @endphp
-
-                            @foreach ($customers as $index => $customer)
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td class="text-center">{{ $firstItem  + $index }}</td>
-                                    <td>{{ $customer->kode }}</td>
-                                    <td>{{ $customer->name }}</td>
-                                    <td>{{ $customer->telp }}</td>
-                                    <td>
-                                        @php
-                                            $encryptid = Crypt::encrypt($customer->id);
-                                        @endphp
-                                        <a href="{{ route('customer.edit', $encryptid) }}" class="btn btn-warning"
-                                            data-name="{{ $customer->name }}" data-telp ="{{ $customer->telp }}" data-kode="{{ $customer->kode }}"
-                                            data-bs-target="#addModal" data-bs-toggle="modal" id="editModalbtn"><i
-                                                class="far fa-edit"></i></a>
-                                                
-                                        <a href="{{ route('customer.delete', $encryptid) }}" onclick="deletebtn(event,{{ $customer->id }},'{{ route('customer.delete', $encryptid) }}')" class="btn btn-danger"><i
-                                                class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                    <th class="text-center">No</th>
+                                    <th>Kode</th>
+                                    <th>Nama</th>
+                                    <th>No Telp</th>
 
-                        </tbody>
-                    </table>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @php
+                                    $currentPage = $customers->currentPage();
+                                    $perPage = $customers->perPage();
+                                    $firstItem = $customers->firstItem();
+                                @endphp
+
+                                @foreach ($customers as $index => $customer)
+                                    <tr>
+                                        <td class="text-center">{{ $firstItem + $index }}</td>
+                                        <td>{{ $customer->kode }}</td>
+                                        <td>{{ $customer->name }}</td>
+                                        <td>{{ $customer->telp }}</td>
+                                        <td>
+                                            @php
+                                                $encryptid = Crypt::encrypt($customer->id);
+                                            @endphp
+                                            <a href="{{ route('customer.edit', $encryptid) }}" class="btn btn-warning"
+                                                data-name="{{ $customer->name }}" data-telp ="{{ $customer->telp }}"
+                                                data-kode="{{ $customer->kode }}" data-bs-target="#addModal"
+                                                data-bs-toggle="modal" id="editModalbtn"><i class="far fa-edit"></i></a>
+
+                                            <a href="{{ route('customer.delete', $encryptid) }}"
+                                                onclick="deletebtn(event,{{ $customer->id }},'{{ route('customer.delete', $encryptid) }}')"
+                                                class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="pagination-container">
                         {{ $customers->links('pagination::bootstrap-5') }}
                     </div>
@@ -158,7 +160,7 @@
                 $('#no_telp').val('');
                 $('#formType').attr('action', $(this).attr('href'));
             })
-            $(document).on('click','#editModalbtn', function() {
+            $(document).on('click', '#editModalbtn', function() {
                 $('#Title').html('Edit Customer');
                 $('#nama').val($(this).data('name'));
                 $('#kode').val($(this).data('kode'));

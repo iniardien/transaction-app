@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Customer as ControllersCustomer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,5 +18,9 @@ class Customer extends Model
         'telp',
         'is_delete'
     ];
+
+    public function cust(){
+        return $this->hasMany(ControllersCustomer::class, 'cust_id', 'id');
+    }
     
 }

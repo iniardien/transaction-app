@@ -16,8 +16,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-// Dashboard
-Route::get('/',[Dashboard::class,'index'])->name('dashboard');
 // Customer
 Route::get('/customer', [Customer::class, 'index'])->name('customer.index');
 Route::post('/customer', [Customer::class, 'create'])->name('customer.create');
@@ -29,8 +27,10 @@ Route::post('/barang', [Barang::class, 'create'])->name('barang.create');
 Route::post('/barang/{id}', [Barang::class, 'edit'])->name('barang.edit');
 Route::get('/barang/{id}', [Barang::class, 'delete'])->name('barang.delete');
 // Transaksi
-Route::get('/transaksi', [Transaksi::class, 'index'])->name('transaksi.index');
+Route::get('/', [Transaksi::class, 'index'])->name('transaksi.index');
+Route::get('/transaksi/detail/{id}', [Transaksi::class, 'detail'])->name('transaksi.detail');
 Route::get('/transaksi/create', [Transaksi::class, 'create'])->name('transaksi.create');
-Route::post('/transaksi/create', [Transaksi::class, 'store'])->name('transaksi.store');
+Route::post('/transaksi/store', [Transaksi::class, 'store'])->name('transaksi.store');
 Route::get('/transaksi/edit/{id}', [Transaksi::class, 'edit'])->name('transaksi.edit');
+Route::post('/transaksi/edit/{id}', [Transaksi::class, 'update'])->name('transaksi.update');
 Route::get('/transaksi/{id}', [Transaksi::class, 'delete'])->name('transaksi.delete');

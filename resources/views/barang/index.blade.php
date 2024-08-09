@@ -13,8 +13,6 @@
             color: white;
             /* Warna teks putih untuk item aktif */
         }
-
-        
     </style>
     <div class="row">
         <div class="col-12">
@@ -46,51 +44,52 @@
                     </div>
 
 
-
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th class="text-center">No</th>
-                                <th>Kode</th>
-                                <th>Nama</th>
-                                <th>Harga</th>
-                                <th>Qty</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $currentPage = $barangs->currentPage();
-                                $perPage = $barangs->perPage();
-                                $firstItem = $barangs->firstItem();
-                            @endphp
-
-                            @foreach ($barangs as $index => $barang)
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td class="text-center">{{ $firstItem + $index }}</td>
-                                    <td>{{ $barang->kode }}</td>
-                                    <td>{{ $barang->nama }}</td>
-                                    <td>Rp{{ number_format($barang->harga, 2, ',', '.') }}</td>
-                                    <td>{{ $barang->qty }}</td>
-                                    <td>
-                                        @php
-                                            $encryptid = Crypt::encrypt($barang->id);
-                                        @endphp
-                                        <a href="{{ route('barang.edit', $encryptid) }}" class="btn btn-warning"
-                                            data-name="{{ $barang->nama }}" data-kode="{{ $barang->kode }}"
-                                            data-harga="{{ number_format($barang->harga, 0, ',', '.') }}"
-                                            data-qty="{{ $barang->qty }}" data-bs-target="#addModal"
-                                            data-bs-toggle="modal" id="editModalbtn"><i class="far fa-edit"></i></a>
-
-                                        <a href="{{ route('barang.delete', $encryptid) }}"
-                                            onclick="deletebtn(event,{{ $barang->id }},'{{ route('barang.delete', $encryptid) }}')"
-                                            class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                                    </td>
+                                    <th class="text-center">No</th>
+                                    <th>Kode</th>
+                                    <th>Nama</th>
+                                    <th>Harga</th>
+                                    <th>Qty</th>
+                                    <th>Action</th>
                                 </tr>
-                            @endforeach
+                            </thead>
+                            <tbody>
+                                @php
+                                    $currentPage = $barangs->currentPage();
+                                    $perPage = $barangs->perPage();
+                                    $firstItem = $barangs->firstItem();
+                                @endphp
 
-                        </tbody>
-                    </table>
+                                @foreach ($barangs as $index => $barang)
+                                    <tr>
+                                        <td class="text-center">{{ $firstItem + $index }}</td>
+                                        <td>{{ $barang->kode }}</td>
+                                        <td>{{ $barang->nama }}</td>
+                                        <td>Rp{{ number_format($barang->harga, 2, ',', '.') }}</td>
+                                        <td>{{ $barang->qty }}</td>
+                                        <td>
+                                            @php
+                                                $encryptid = Crypt::encrypt($barang->id);
+                                            @endphp
+                                            <a href="{{ route('barang.edit', $encryptid) }}" class="btn btn-warning"
+                                                data-name="{{ $barang->nama }}" data-kode="{{ $barang->kode }}"
+                                                data-harga="{{ number_format($barang->harga, 0, ',', '.') }}"
+                                                data-qty="{{ $barang->qty }}" data-bs-target="#addModal"
+                                                data-bs-toggle="modal" id="editModalbtn"><i class="far fa-edit"></i></a>
+
+                                            <a href="{{ route('barang.delete', $encryptid) }}"
+                                                onclick="deletebtn(event,{{ $barang->id }},'{{ route('barang.delete', $encryptid) }}')"
+                                                class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="pagination-container">
                         {{ $barangs->links('pagination::bootstrap-5') }}
                     </div>
@@ -137,10 +136,10 @@
                                         <div class="input-group">
 
                                             <span class="input-group-text">Rp</span>
-                                            <input type="text" class="form-control" name="harga"
-                                                id="harga" required>
-                                                
-                                          
+                                            <input type="text" class="form-control" name="harga" id="harga"
+                                                required>
+
+
 
                                         </div>
                                     </div>

@@ -43,67 +43,74 @@
                     </div>
 
 
-
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th class="text-center">No</th>
-                                <th>No Transaksi</th>
-                                <th>Tanggal</th>
-                                <th>nama Customer</th>
-                                <th>Jumlah Barang</th>
-                                <th>Sub Total</th>
-                                <th>Diskon</th>
-                                <th>Ongkir</th>
-                                <th>Total</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @php
-                                $currentPage = $transaksi->currentPage();
-                                $perPage = $transaksi->perPage();
-                                $firstItem = $transaksi->firstItem();
-                            @endphp
-
-                            @foreach ($transaksi as $index => $customer)
+                    <div class="table-responsive">
+                        <table class="table" width="100%">
+                            <thead>
                                 <tr>
-                                    <td class="text-center">{{ $firstItem  + $index }}</td>
-                                    <td>{{ $customer->kode }}</td>
-                                    <td>{{ $customer->name }}</td>
-                                    <td>{{ $customer->telp }}</td>
-                                    <td>
-                                        @php
-                                            $encryptid = Crypt::encrypt($customer->id);
-                                        @endphp
-                                        <a href="{{ route('customer.edit', $encryptid) }}" class="btn btn-warning"
-                                            data-name="{{ $customer->name }}" data-telp ="{{ $customer->telp }}" data-kode="{{ $customer->kode }}"
-                                            data-bs-target="#addModal" data-bs-toggle="modal" id="editModalbtn"><i
-                                                class="far fa-edit"></i></a>
-                                                
-                                        <a href="{{ route('customer.delete', $encryptid) }}" onclick="deletebtn(event,{{ $customer->id }},'{{ route('customer.delete', $encryptid) }}')" class="btn btn-danger"><i
-                                                class="fas fa-trash"></i></a>
-                                    </td>
+                                    <th class="text-center">No</th>
+                                    <th>No Transaksi</th>
+                                    <th>Tanggal</th>
+                                    <th>nama Customer</th>
+                                    <th>Jumlah Barang</th>
+                                    <th>Sub Total</th>
+                                    <th>Diskon</th>
+                                    <th>Ongkir</th>
+                                    <th>Total</th>
+                                    <th>Action</th>
                                 </tr>
-                            @endforeach
+                            </thead>
+                            <tbody>
 
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>Grand Total</td>
-                                <td></td>
-                                <td></td>
-                                <td>Total</td>
-                                <td></td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                                @php
+                                    $currentPage = $transaksi->currentPage();
+                                    $perPage = $transaksi->perPage();
+                                    $firstItem = $transaksi->firstItem();
+                                @endphp
+
+                                @foreach ($transaksi as $index => $trans)
+                                    <tr>
+                                        <td class="text-center">{{ $firstItem + $index }}</td>
+                                        <td>{{ $trans->kode }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($trans->tgl)->format('d-M-Y') }}</td>
+                                        <td>{{ $trans->cust->name }}</td>
+                                        <td>{{ $trans->barang_detail->count() }}</td>
+                                        <td>Rp{{ number_format($trans->subtotal, 2, ',', '.') }}</td>
+                                        <td>Rp{{ number_format($trans->diskon, 2, ',', '.') }}</td>
+                                        <td>Rp{{ number_format($trans->ongkir, 2, ',', '.') }}</td>
+                                        <td>Rp{{ number_format($trans->total_bayar, 2, ',', '.') }}</td>
+                                        <td>
+                                            @php
+                                                $encryptid = Crypt::encrypt($trans->id);
+                                            @endphp
+                                            <a href="{{ route('transaksi.detail', $encryptid) }}" class="btn btn-info"><i
+                                                class="fas fa-info"></i></a>
+                                            {{-- <a href="{{ route('transaksi.edit', $encryptid) }}" class="btn btn-warning"><i class="far fa-edit"></i></a> --}}
+
+                                            <a href="{{ route('transaksi.delete', $encryptid) }}"
+                                                onclick="deletebtn(event,{{ $trans->id }},'{{ route('transaksi.delete', $encryptid) }}')"
+                                                class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                            
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Grand Total</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Rp{{ number_format($grand_total, 2, ',', '.') }}</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                     <div class="pagination-container">
                         {{ $transaksi->links('pagination::bootstrap-5') }}
                     </div>
@@ -175,7 +182,7 @@
                 $('#no_telp').val('');
                 $('#formType').attr('action', $(this).attr('href'));
             })
-            $(document).on('click','#editModalbtn', function() {
+            $(document).on('click', '#editModalbtn', function() {
                 $('#Title').html('Edit Customer');
                 $('#nama').val($(this).data('name'));
                 $('#kode').val($(this).data('kode'));
